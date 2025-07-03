@@ -11,11 +11,13 @@
 <body>
     <input type="file" id="model-upload" accept=".glb,.gltf,.obj,.stl">
     
-    <script type="module">
-        import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.154.0/build/three.module.js';
-        import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.154.0/examples/jsm/loaders/GLTFLoader.js';
-        import { OBJLoader } from 'https://cdn.jsdelivr.net/npm/three@0.154.0/examples/jsm/loaders/OBJLoader.js';
-
+    <!-- Подключаем Three.js и загрузчики (не модули!) -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.154.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.154.0/examples/js/loaders/GLTFLoader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.154.0/examples/js/loaders/OBJLoader.min.js"></script>
+    
+    <script>
+        // Теперь THREE и загрузчики доступны глобально
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0xeeeeee);
         
@@ -51,8 +53,8 @@
             scene.children.slice(3).forEach(child => scene.remove(child));
 
             const loader = filename.endsWith('.glb') || filename.endsWith('.gltf') 
-                ? new GLTFLoader() 
-                : new OBJLoader();
+                ? new THREE.GLTFLoader() 
+                : new THREE.OBJLoader();
 
             if (filename.endsWith('.glb') || filename.endsWith('.gltf')) {
                 loader.parse(arrayBuffer, null, function(gltf) {
